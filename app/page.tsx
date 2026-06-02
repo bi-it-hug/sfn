@@ -1,19 +1,27 @@
-import { Button } from "@/components/ui/button"
+import { SampleTable } from "@/components/sample-table"
+import { SampleChart } from "@/components/sample-chart"
+import { SampleCard } from "@/components/sample-card"
 
 export default function Page() {
-  return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
+    return (
+        <div className="flex size-full min-h-0 flex-col gap-grid">
+            <section className="grid h-[calc(100vh-var(--header-height)-var(--spacing-grid))] min-h-0 w-full shrink-0 grid-rows-2 gap-grid md:grid-cols-2">
+                <SampleChart />
+                <SampleChart />
+                <SampleChart />
+                <SampleChart />
+            </section>
+            <section className="grid size-full gap-grid md:grid-cols-12">
+                <section className="col-span-7">
+                    <SampleTable />
+                </section>
+                <section className="col-span-5 grid size-full gap-grid md:grid-cols-2">
+                    <SampleCard />
+                    <SampleCard />
+                    <SampleCard />
+                    <SampleCard />
+                </section>
+            </section>
         </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
-      </div>
-    </div>
-  )
+    )
 }
