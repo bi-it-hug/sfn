@@ -1,10 +1,11 @@
 "use client"
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { LogoutDialog } from "@/components/logout-dialog"
+import { AvatarUser } from "@/components/avatar-user"
 import { useSidebar } from "@/components/ui/sidebar"
 import { Button } from "@/components/ui/button"
 import { LogOut } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { useState } from "react"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -13,7 +14,6 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { AvatarUser } from "./avatar-user"
 
 export function NavUser({
     user,
@@ -25,6 +25,7 @@ export function NavUser({
     }
 }) {
     const { isMobile } = useSidebar()
+    const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false)
 
     return (
         <DropdownMenu>
@@ -55,11 +56,20 @@ export function NavUser({
                     </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem
+                    onSelect={(event) => {
+                        event.preventDefault()
+                        setIsLogoutDialogOpen(true)
+                    }}
+                >
                     <LogOut />
                     Log out
                 </DropdownMenuItem>
             </DropdownMenuContent>
+            <LogoutDialog
+                open={isLogoutDialogOpen}
+                onOpenChange={setIsLogoutDialogOpen}
+            />
         </DropdownMenu>
     )
 }

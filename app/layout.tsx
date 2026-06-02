@@ -3,7 +3,6 @@
 import { ThemeProvider } from "@/components/theme-provider"
 import { AppBreadcrumb } from "@/components/app-breadcrumb"
 import { TooltipProvider } from "@/components/ui/tooltip"
-import { NavSettings } from "@/components/nav-settings"
 import { Separator } from "@/components/ui/separator"
 import { Geist, Geist_Mono } from "next/font/google"
 import { NavUser } from "@/components/nav-user"
@@ -29,6 +28,7 @@ import {
     SidebarTrigger,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
+import { SettingsDialog } from "@/components/settings-dialog"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -107,13 +107,13 @@ export default function RootLayout({
                                                 >
                                                     <SidebarMenuButton
                                                         tooltip={page.name}
-                                                        asChild
                                                         className={
                                                             pathname ===
                                                             page.href
                                                                 ? "active"
                                                                 : undefined
                                                         }
+                                                        asChild
                                                     >
                                                         <Link href={page.href}>
                                                             <page.icon />
@@ -128,7 +128,11 @@ export default function RootLayout({
                                     </SidebarGroup>
                                 </SidebarContent>
                                 <SidebarFooter>
-                                    <NavSettings />
+                                    <SidebarMenu>
+                                        <SidebarMenuItem>
+                                            <SettingsDialog />
+                                        </SidebarMenuItem>
+                                    </SidebarMenu>
                                 </SidebarFooter>
                             </Sidebar>
                             <SidebarInset>
