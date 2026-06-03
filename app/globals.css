@@ -27,11 +27,11 @@
     --chart-3: oklch(0.439 0 0);
     --chart-4: oklch(0.371 0 0);
     --chart-5: oklch(0.269 0 0); */
-    --chart-1: var(--color-lime-400);
-    --chart-2: var(--color-green-400);
-    --chart-3: var(--color-emerald-400);
-    --chart-4: var(--color-teal-400);
-    --chart-5: var(--color-cyan-400);
+    --chart-1: var(--color-green-400);
+    --chart-2: var(--color-cyan-400);
+    --chart-3: var(--color-indigo-400);
+    --chart-4: var(--color-fuchsia-400);
+    --chart-5: var(--color-rose-400);
     --radius: 0.625rem;
     --sidebar: oklch(0.985 0 0);
     --sidebar-foreground: oklch(0.145 0 0);
@@ -71,11 +71,11 @@
     --chart-3: oklch(0.439 0 0);
     --chart-4: oklch(0.371 0 0);
     --chart-5: oklch(0.269 0 0); */
-    --chart-1: var(--color-lime-200);
-    --chart-2: var(--color-green-300);
-    --chart-3: var(--color-emerald-300);
-    --chart-4: var(--color-teal-300);
-    --chart-5: var(--color-cyan-300);
+    --chart-1: var(--color-green-300);
+    --chart-2: var(--color-cyan-300);
+    --chart-3: var(--color-indigo-300);
+    --chart-4: var(--color-fuchsia-300);
+    --chart-5: var(--color-rose-300);
     --sidebar: oklch(0.205 0 0);
     --sidebar-foreground: oklch(0.985 0 0);
     --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -157,7 +157,7 @@
         @apply cursor-pointer;
     }
 
-    [data-slot="input"]:focus,
+    /* [data-slot="input"]:focus,
     [data-slot="input"]:focus-visible,
     [data-slot="button"]:focus,
     [data-slot="button"]:focus-visible,
@@ -173,7 +173,7 @@
     [data-slot="dropdown-menu-trigger"]:focus-visible {
         box-shadow: 0 0 1px
             color-mix(in oklab, var(--foreground) 25%, transparent) !important;
-    }
+    } */
 }
 
 @layer utilities {

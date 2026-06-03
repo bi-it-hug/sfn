@@ -30,7 +30,7 @@ import {
 import Link from "next/link"
 import { SettingsDialog } from "@/components/settings-dialog"
 
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
+const fontSans = Geist({ subsets: ["latin"], variable: "--font-sans" })
 
 const fontMono = Geist_Mono({
     subsets: ["latin"],
@@ -86,7 +86,7 @@ export default function RootLayout({
             suppressHydrationWarning
             className={cn(
                 fontMono.variable,
-                geist.variable,
+                fontSans.variable,
                 "font-sans antialiased"
             )}
         >
