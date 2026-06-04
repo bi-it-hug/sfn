@@ -31,9 +31,15 @@ export function useFetch<T>(
         const requestUrl = url
         let cancelled = false
 
+        const delay = (ms: number) =>
+            new Promise((resolve) => setTimeout(resolve, ms))
+
         async function run() {
             setLoading(true)
             setError(null)
+
+            // await delay(10000)
+
             try {
                 const response = await fetch(requestUrl, {
                     method: "GET",

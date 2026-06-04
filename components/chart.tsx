@@ -217,8 +217,8 @@ export function Chart({
                         }
                     >
                         <TabsList className="flex-row-reverse">
-                            {TIME_RANGE_OPTIONS.map((option) => (
-                                <TabsTrigger value={option.value}>
+                            {TIME_RANGE_OPTIONS.map((option, index) => (
+                                <TabsTrigger key={index} value={option.value}>
                                     {option.label}
                                 </TabsTrigger>
                             ))}
@@ -240,9 +240,9 @@ export function Chart({
                         <SelectContent>
                             <SelectGroup>
                                 <SelectLabel>Time Range</SelectLabel>
-                                {TIME_RANGE_OPTIONS.map((option) => (
+                                {TIME_RANGE_OPTIONS.map((option, index) => (
                                     <SelectItem
-                                        key={option.value}
+                                        key={index}
                                         value={option.value}
                                     >
                                         {option.label}

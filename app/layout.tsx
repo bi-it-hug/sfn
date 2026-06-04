@@ -101,10 +101,8 @@ export default function RootLayout({
                                             Pages
                                         </SidebarGroupLabel>
                                         <SidebarMenu className="gap-1">
-                                            {navPages.map((page) => (
-                                                <SidebarMenuItem
-                                                    key={page.name}
-                                                >
+                                            {navPages.map((page, index) => (
+                                                <SidebarMenuItem key={index}>
                                                     <SidebarMenuButton
                                                         tooltip={page.name}
                                                         className={
