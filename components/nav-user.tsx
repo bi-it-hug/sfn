@@ -14,26 +14,24 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { User } from "@/types/user"
 
-export function NavUser({
-    user,
-}: {
-    user: {
-        name: string
-        email: string
-        avatar: string
-    }
-}) {
+export function NavUser({ user }: { user: User }) {
     const { isMobile } = useSidebar()
     const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false)
+    const currentUser: User = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        avatar: user.avatar,
+    }
 
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="rounded-full">
-                    <AvatarUser
-                        user={{ name: user.name, avatar: user.avatar }}
-                    />
+                    <AvatarUser user={currentUser} />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -42,9 +40,7 @@ export function NavUser({
             >
                 <DropdownMenuLabel className="p-0 font-normal">
                     <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                        <AvatarUser
-                            user={{ name: user.name, avatar: user.avatar }}
-                        />
+                        <AvatarUser user={currentUser} />
                         <div className="grid flex-1 text-left text-sm leading-tight">
                             <span className="truncate font-medium">
                                 {user.name}

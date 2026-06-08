@@ -29,21 +29,25 @@ export default function Page() {
                         data={rawData?.myPlants}
                         title="Total Plants"
                         loading={loading}
+                        error={error}
                     />
                     <CountCard
                         data={rawData?.nodes}
                         title="Total Nodes"
                         loading={loading}
+                        error={error}
                     />
                     <CountCard
                         data={rawData?.sensors}
                         title="Total Sensors"
                         loading={loading}
+                        error={error}
                     />
                     <CountCard
                         data={rawData?.plants}
                         title="Total Plants in Library"
                         loading={loading}
+                        error={error}
                     />
                 </section>
             </section>

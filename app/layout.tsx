@@ -1,5 +1,7 @@
 "use client"
 
+import { NavNotifications } from "@/components/nav-notifications"
+import { SettingsDialog } from "@/components/settings-dialog"
 import { ThemeProvider } from "@/components/theme-provider"
 import { AppBreadcrumb } from "@/components/app-breadcrumb"
 import { TooltipProvider } from "@/components/ui/tooltip"
@@ -9,7 +11,9 @@ import { NavUser } from "@/components/nav-user"
 import { usePathname } from "next/navigation"
 import { navPages } from "@/lib/navigation"
 import { useEffect, useState } from "react"
-import { cn } from "@/lib/utils"
+import { greetings, user } from "@/app/sample-data"
+import { cn, getRandomInt } from "@/lib/utils"
+import Link from "next/link"
 import "@/app/globals.css"
 import {
     Sidebar,
@@ -27,8 +31,6 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar"
-import Link from "next/link"
-import { SettingsDialog } from "@/components/settings-dialog"
 
 const fontSans = Geist({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -37,18 +39,13 @@ const fontMono = Geist_Mono({
     variable: "--font-mono",
 })
 
-const user = {
-    name: "Lorenzo Hug",
-    email: "lorenzo.hug@icloud.com",
-    avatar: "/pb.png",
-}
-
 export default function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode
 }>) {
     const [isScrolled, setIsScrolled] = useState(false)
+    const [greeting, setGreeting] = useState(greetings[0])
     const pathname = usePathname()
 
     useEffect(() => {
@@ -59,6 +56,10 @@ export default function RootLayout({
         onScroll()
         window.addEventListener("scroll", onScroll, { passive: true })
         return () => window.removeEventListener("scroll", onScroll)
+    }, [])
+
+    useEffect(() => {
+        setGreeting(greetings[getRandomInt(0, greetings.length - 1)]!)
     }, [])
 
     useEffect(() => {
@@ -79,6 +80,8 @@ export default function RootLayout({
 
         return () => observer.disconnect()
     }, [])
+
+    const currentUser = user[0]
 
     return (
         <html
@@ -153,7 +156,11 @@ export default function RootLayout({
                                         <AppBreadcrumb />
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <NavUser user={user} />
+                                        <p className="truncate text-xs text-muted-foreground">
+                                            {`${greeting}, ${currentUser.name.trim().split(/\s+/)[0]}!`}
+                                        </p>
+                                        <NavNotifications />
+                                        <NavUser user={currentUser} />
                                     </div>
                                 </header>
                                 <main className="flex min-h-0 w-full flex-1 flex-col px-grid pb-grid">

@@ -36,6 +36,8 @@ import {
     SelectLabel,
 } from "@/components/ui/select"
 
+const REFRESH_INTERVAL_MS = 10 * 60 * 1000
+
 const TIME_RANGE_OPTIONS = [
     { value: "24h", label: "24 hours", dateFilter: "24+HOUR" },
     { value: "7d", label: "7 days", dateFilter: "7+DAY" },
@@ -151,6 +153,7 @@ export function Chart({
         initialData: [] as SensorHistoryItem[],
         parse: (json) => unwrapListResponse(json as SensorHistoryResponse),
         errorMessage: "Could not load chart data.",
+        refreshInterval: REFRESH_INTERVAL_MS,
     })
 
     const nodes = useMemo(() => {
@@ -257,9 +260,7 @@ export function Chart({
                 {loading ? (
                     <Skeleton className="aspect-auto size-full min-h-0 rounded-lg" />
                 ) : chartData.length === 0 ? (
-                    <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-                        No data available.
-                    </div>
+                    <div className="no-data">No data available.</div>
                 ) : (
                     <ChartContainer
                         config={chartConfig}

@@ -1,4 +1,4 @@
-import { cn, getPercentage, randomInt } from "@/lib/utils"
+import { cn, getPercentage, getRandomInt } from "@/lib/utils"
 import { Skeleton } from "@/components/ui/skeleton"
 import { TopPlantItem } from "@/types/top-plants"
 import { MyPlantItem } from "@/types/my-plants"
@@ -7,10 +7,12 @@ import { Badge } from "@/components/ui/badge"
 import { NodeItem } from "@/types/nodes"
 import {
     Droplet,
+    Droplets,
     Edit,
     FileText,
     GlobeCheck,
     GlobeOff,
+    MapPin,
     Plus,
     Trash,
 } from "lucide-react"
@@ -23,10 +25,11 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { ButtonGroup } from "./ui/button-group"
 
-export function CardSkeleton() {
+function CardSkeleton() {
     return (
-        <Card className="relative h-fit w-full pt-0">
+        <Card size="sm" className="relative h-fit w-full pt-0">
             <Skeleton className="relative aspect-video w-full object-cover" />
             <CardHeader>
                 <CardAction>
@@ -43,7 +46,7 @@ export function CardSkeleton() {
     )
 }
 
-export function MyPlantCard({ data }: { data: MyPlantItem }) {
+function MyPlantCard({ data }: { data: MyPlantItem }) {
     const values = [
         {
             min: data.plant.minEnvHumid,
@@ -72,30 +75,30 @@ export function MyPlantCard({ data }: { data: MyPlantItem }) {
     ]
 
     return (
-        <Card className="relative h-fit w-full pt-0">
+        <Card size="sm" className="relative h-fit w-full pt-0">
             <img
                 src={data.plant.imageUrl}
                 alt="Event cover"
-                className="relative aspect-video w-full object-cover brightness-75 dark:brightness-75"
+                className="relative aspect-video w-full object-cover brightness-90 dark:brightness-85"
             />
             <CardHeader>
                 <CardAction>
-                    <Badge variant="secondary" className="font-mono">
-                        {new Date(data.lastWateredAt).toLocaleDateString(
-                            "de-CH",
-                            {
-                                day: "2-digit",
-                                month: "2-digit",
-                                year: "numeric",
-                            }
-                        )}
+                    <Badge variant="secondary">
+                        <MapPin data-icon="inline-start" />
+                        {data.location === "" ? "Unknown" : data.location}
                     </Badge>
                 </CardAction>
                 <CardTitle>{data.plant.displayPid}</CardTitle>
-                <CardDescription>{data.plant.alias}</CardDescription>
+                <CardDescription className="font-mono">
+                    {new Date(data.lastWateredAt).toLocaleDateString("de-CH", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                    })}
+                </CardDescription>
             </CardHeader>
             <CardContent>
-                <div className="gap-y-0-0 grid grid-cols-[auto_1fr_auto] items-center justify-center gap-x-2">
+                <div className="grid grid-cols-[auto_1fr_auto] items-center justify-center gap-x-2.5">
                     {values.map((entry, index) => (
                         <PlantValues
                             key={index}
@@ -107,23 +110,20 @@ export function MyPlantCard({ data }: { data: MyPlantItem }) {
                 </div>
             </CardContent>
             <CardFooter className="gap-1">
-                <Button variant="destructive" size="icon">
-                    <Trash data-icon="inline-start" />
+                <Button variant="destructive" size="default">
+                    <Trash data-icon="inline-start" /> Delete
                 </Button>
-                <Button variant="default" size="icon">
-                    <Edit data-icon="inline-start" />
-                </Button>
-                <Button variant="default" size="icon">
-                    <Droplet data-icon="inline-start" />
+                <Button variant="default" size="default">
+                    <Edit data-icon="inline-start" /> Edit
                 </Button>
             </CardFooter>
         </Card>
     )
 }
 
-export function TopPlantCard({ data }: { data: TopPlantItem }) {
+function TopPlantCard({ data }: { data: TopPlantItem }) {
     return (
-        <Card className="relative h-fit w-full pt-0">
+        <Card size="sm" className="relative h-fit w-full pt-0">
             <img
                 src={data.imageUrl}
                 alt="Event cover"
@@ -148,17 +148,17 @@ export function TopPlantCard({ data }: { data: TopPlantItem }) {
     )
 }
 
-export function NodeCard({ data }: { data: NodeItem }) {
+function NodeCard({ data }: { data: NodeItem }) {
     const ActiveIcon = data.isActive ? GlobeCheck : GlobeOff
 
     return (
-        <Card className="h-fit w-full">
+        <Card size="sm" className="h-fit w-full">
             <CardHeader>
                 <CardAction>
                     <Badge
                         variant={data.isActive ? "secondary" : "destructive"}
                     >
-                        <ActiveIcon data-icon="inlin-start" />
+                        <ActiveIcon data-icon="inline-start" />
                         {data.isActive ? "Online" : "Offline"}
                     </Badge>
                 </CardAction>
@@ -241,7 +241,7 @@ function PlantValues({
         | MyPlantItem["plant"]["maxTemp"]
     row: string
 }) {
-    const randomValue = randomInt(min, max)
+    const randomValue = getRandomInt(min, max)
 
     return (
         <>
@@ -265,3 +265,5 @@ function PlantValues({
         </>
     )
 }
+
+export { CardSkeleton, MyPlantCard, TopPlantCard, NodeCard }

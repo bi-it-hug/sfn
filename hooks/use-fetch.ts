@@ -4,6 +4,7 @@ type UseFetchOptions<T> = {
     initialData: T
     parse: (json: unknown) => T
     errorMessage?: string
+    refreshInterval?: number
 }
 
 export function useFetch<T>(
@@ -12,6 +13,7 @@ export function useFetch<T>(
         initialData,
         parse,
         errorMessage = "Could not load data.",
+        refreshInterval,
     }: UseFetchOptions<T>
 ) {
     const [data, setData] = useState(initialData)
@@ -34,11 +36,11 @@ export function useFetch<T>(
         const delay = (ms: number) =>
             new Promise((resolve) => setTimeout(resolve, ms))
 
-        async function run() {
-            setLoading(true)
-            setError(null)
-
-            // await delay(10000)
+        async function run(showLoading = true) {
+            if (showLoading) {
+                setLoading(true)
+                setError(null)
+            }
 
             try {
                 const response = await fetch(requestUrl, {
@@ -53,14 +55,17 @@ export function useFetch<T>(
                 const json = await response.json()
                 if (!cancelled) {
                     setData(parseRef.current(json))
+                    if (!showLoading) {
+                        setError(null)
+                    }
                 }
             } catch {
-                if (!cancelled) {
+                if (!cancelled && showLoading) {
                     setError(errorMessage)
                     setData(initialRef.current)
                 }
             } finally {
-                if (!cancelled) {
+                if (!cancelled && showLoading) {
                     setLoading(false)
                 }
             }
@@ -68,10 +73,18 @@ export function useFetch<T>(
 
         run()
 
+        const intervalId =
+            refreshInterval && refreshInterval > 0
+                ? setInterval(() => run(false), refreshInterval)
+                : undefined
+
         return () => {
             cancelled = true
+            if (intervalId) {
+                clearInterval(intervalId)
+            }
         }
-    }, [url, errorMessage])
+    }, [url, errorMessage, refreshInterval])
 
     return { data, loading, error }
 }

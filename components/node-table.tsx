@@ -19,6 +19,7 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { Skeleton } from "./ui/skeleton"
+import { Empty, EmptyHeader, EmptyTitle } from "./ui/empty"
 
 function LoadingTableCell() {
     return (
@@ -54,61 +55,65 @@ export function NodeTable() {
 
     return (
         <Card className="h-full">
-            <CardHeader>
+            <CardHeader className="border-b">
                 <CardTitle>Nodes</CardTitle>
             </CardHeader>
             <CardContent>
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>ID</TableHead>
-                            <TableHead>Name</TableHead>
-                            <TableHead>UUID</TableHead>
-                            <TableHead>IP Address</TableHead>
-                            <TableHead>Location</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {loading ? (
-                            <>
-                                <LoadingTableRow />
-                                <LoadingTableRow />
-                                <LoadingTableRow />
-                                <LoadingTableRow />
-                                <LoadingTableRow />
-                                <LoadingTableRow />
-                            </>
-                        ) : (
-                            rawData?.map((entry, index) => (
-                                <TableRow key={index}>
-                                    <TableCell className="font-medium">
-                                        {entry.id}
-                                    </TableCell>
-                                    <TableCell>
-                                        {entry.name == ""
-                                            ? noValue
-                                            : entry.name}
-                                    </TableCell>
-                                    <TableCell>
-                                        {entry.uuid == ""
-                                            ? noValue
-                                            : entry.uuid}
-                                    </TableCell>
-                                    <TableCell>
-                                        {entry.ipAddress == ""
-                                            ? noValue
-                                            : entry.ipAddress}
-                                    </TableCell>
-                                    <TableCell>
-                                        {entry.location == ""
-                                            ? noValue
-                                            : entry.location}
-                                    </TableCell>
-                                </TableRow>
-                            ))
-                        )}
-                    </TableBody>
-                </Table>
+                {error ? (
+                    <div className="no-data">No data available.</div>
+                ) : (
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>ID</TableHead>
+                                <TableHead>Name</TableHead>
+                                <TableHead>UUID</TableHead>
+                                <TableHead>IP Address</TableHead>
+                                <TableHead>Location</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {loading ? (
+                                <>
+                                    <LoadingTableRow />
+                                    <LoadingTableRow />
+                                    <LoadingTableRow />
+                                    <LoadingTableRow />
+                                    <LoadingTableRow />
+                                    <LoadingTableRow />
+                                </>
+                            ) : (
+                                rawData?.map((entry, index) => (
+                                    <TableRow key={index}>
+                                        <TableCell className="font-medium">
+                                            {entry.id}
+                                        </TableCell>
+                                        <TableCell>
+                                            {entry.name == ""
+                                                ? noValue
+                                                : entry.name}
+                                        </TableCell>
+                                        <TableCell>
+                                            {entry.uuid == ""
+                                                ? noValue
+                                                : entry.uuid}
+                                        </TableCell>
+                                        <TableCell>
+                                            {entry.ipAddress == ""
+                                                ? noValue
+                                                : entry.ipAddress}
+                                        </TableCell>
+                                        <TableCell>
+                                            {entry.location == ""
+                                                ? noValue
+                                                : entry.location}
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            )}
+                        </TableBody>
+                    </Table>
+                )}
             </CardContent>
         </Card>
     )
