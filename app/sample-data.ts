@@ -38,7 +38,7 @@ const notifications: Notification[] = [
         href: "#",
     },
     {
-        type: "critical",
+        type: "error",
         message: "Schissverfolgung",
         href: "#",
     },
