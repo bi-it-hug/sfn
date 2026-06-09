@@ -1,19 +1,13 @@
 "use client"
 
-import { NavNotifications } from "@/components/nav-notifications"
+import { AppSidebarMenu } from "@/components/app-sidebar-menu"
 import { SettingsDialog } from "@/components/settings-dialog"
 import { ThemeProvider } from "@/components/theme-provider"
-import { AppBreadcrumb } from "@/components/app-breadcrumb"
 import { TooltipProvider } from "@/components/ui/tooltip"
-import { Separator } from "@/components/ui/separator"
 import { Geist, Geist_Mono } from "next/font/google"
-import { NavUser } from "@/components/nav-user"
-import { usePathname } from "next/navigation"
-import { navPages } from "@/lib/navigation"
-import { useEffect, useState } from "react"
-import { greetings, user } from "@/app/sample-data"
-import { cn, getRandomInt } from "@/lib/utils"
-import Link from "next/link"
+import { AppHeader } from "@/components/app-header"
+import { Toaster } from "@/components/ui/sonner"
+import { cn } from "@/lib/utils"
 import "@/app/globals.css"
 import {
     Sidebar,
@@ -21,18 +15,16 @@ import {
     SidebarFooter,
     SidebarGroup,
     SidebarGroupLabel,
-    SidebarHeader,
     SidebarMenu,
-    SidebarMenuButton,
     SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import {
     SidebarInset,
     SidebarProvider,
-    SidebarTrigger,
 } from "@/components/ui/sidebar"
 
-const fontSans = Geist({ subsets: ["latin"], variable: "--font-sans" })
+const fontSans = Geist({
+    subsets: ["latin"],
+    variable: "--font-sans",
+})
 
 const fontMono = Geist_Mono({
     subsets: ["latin"],
@@ -44,45 +36,6 @@ export default function RootLayout({
 }: Readonly<{
     children: React.ReactNode
 }>) {
-    const [isScrolled, setIsScrolled] = useState(false)
-    const [greeting, setGreeting] = useState(greetings[0])
-    const pathname = usePathname()
-
-    useEffect(() => {
-        function onScroll() {
-            setIsScrolled(window.scrollY > 8)
-        }
-
-        onScroll()
-        window.addEventListener("scroll", onScroll, { passive: true })
-        return () => window.removeEventListener("scroll", onScroll)
-    }, [])
-
-    useEffect(() => {
-        setGreeting(greetings[getRandomInt(0, greetings.length - 1)]!)
-    }, [])
-
-    useEffect(() => {
-        const header = document.querySelector("header")
-        if (!header) return
-
-        function updateHeight() {
-            document.documentElement.style.setProperty(
-                "--header-height",
-                `${header?.clientHeight}px`
-            )
-        }
-
-        updateHeight()
-
-        const observer = new ResizeObserver(updateHeight)
-        observer.observe(header)
-
-        return () => observer.disconnect()
-    }, [])
-
-    const currentUser = user[0]
-
     return (
         <html
             lang="en"
@@ -94,6 +47,7 @@ export default function RootLayout({
             )}
         >
             <body>
+                <Toaster />
                 <ThemeProvider>
                     <TooltipProvider>
                         <SidebarProvider>
@@ -103,29 +57,7 @@ export default function RootLayout({
                                         <SidebarGroupLabel>
                                             Pages
                                         </SidebarGroupLabel>
-                                        <SidebarMenu className="gap-1">
-                                            {navPages.map((page, index) => (
-                                                <SidebarMenuItem key={index}>
-                                                    <SidebarMenuButton
-                                                        tooltip={page.name}
-                                                        className={
-                                                            pathname ===
-                                                            page.href
-                                                                ? "active"
-                                                                : undefined
-                                                        }
-                                                        asChild
-                                                    >
-                                                        <Link href={page.href}>
-                                                            <page.icon />
-                                                            <span>
-                                                                {page.name}
-                                                            </span>
-                                                        </Link>
-                                                    </SidebarMenuButton>
-                                                </SidebarMenuItem>
-                                            ))}
-                                        </SidebarMenu>
+                                        <AppSidebarMenu />
                                     </SidebarGroup>
                                 </SidebarContent>
                                 <SidebarFooter>
@@ -137,32 +69,7 @@ export default function RootLayout({
                                 </SidebarFooter>
                             </Sidebar>
                             <SidebarInset>
-                                <header
-                                    className={cn(
-                                        "sticky top-0 z-1 flex h-16 shrink-0 items-center justify-between gap-2 px-4 py-2 transition-[width,height,background-color] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12",
-                                        isScrolled
-                                            ? "bg-background"
-                                            : "bg-transparent"
-                                    )}
-                                >
-                                    <div className="flex items-center gap-2">
-                                        <SidebarTrigger className="-ml-1" />
-                                        <Separator
-                                            orientation="vertical"
-                                            className="self mr-2 h-4 self-center!"
-                                        />
-                                    </div>
-                                    <div className="flex w-full items-center justify-start gap-2">
-                                        <AppBreadcrumb />
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <p className="truncate text-xs text-muted-foreground">
-                                            {`${greeting}, ${currentUser.name.trim().split(/\s+/)[0]}!`}
-                                        </p>
-                                        <NavNotifications />
-                                        <NavUser user={currentUser} />
-                                    </div>
-                                </header>
+                                <AppHeader />
                                 <main className="flex min-h-0 w-full flex-1 flex-col px-grid pb-grid">
                                     {children}
                                 </main>

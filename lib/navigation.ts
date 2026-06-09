@@ -1,46 +1,31 @@
-import {
-    LayoutDashboard,
-    Library,
-    Server,
-    Sprout,
-    type LucideIcon,
-} from "lucide-react"
+import { pages } from "@/components/app-sidebar-menu"
 
-export type NavPage = {
+export type BreadcrumbItem = {
     name: string
     href: string
-    icon: LucideIcon
 }
 
-export const navPages: NavPage[] = [
-    {
-        name: "Dashboard",
-        href: "/",
-        icon: LayoutDashboard,
-    },
-    {
-        name: "Plants",
-        href: "/plants",
-        icon: Sprout,
-    },
-    {
-        name: "Library",
-        href: "/library",
-        icon: Library,
-    },
-    {
-        name: "Nodes",
-        href: "/nodes",
-        icon: Server,
-    },
-]
+export function getBreadcrumbTrail(pathname: string): BreadcrumbItem[] {
+    const page = pages.find((p) => p.href === pathname)
+    if (page) return [{ name: page.name, href: page.href }]
 
-export function getNavPageTitle(pathname: string): string {
-    const page = navPages.find((p) => p.href === pathname)
-    if (page) return page.name
+    for (const page of pages) {
+        const subPage = page.subPages?.find((sp) => sp.href === pathname)
+        if (subPage) {
+            return [
+                { name: page.name, href: page.href },
+                { name: subPage.name, href: subPage.href },
+            ]
+        }
+    }
 
     const segment = pathname.split("/").filter(Boolean).pop()
-    if (!segment) return "Page"
+    if (!segment) return [{ name: "Page", href: pathname }]
 
-    return segment.charAt(0).toUpperCase() + segment.slice(1)
+    return [
+        {
+            name: segment.charAt(0).toUpperCase() + segment.slice(1),
+            href: pathname,
+        },
+    ]
 }

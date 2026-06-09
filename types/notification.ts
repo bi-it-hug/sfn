@@ -1,5 +1,7 @@
+import { AlertType } from "@/types/altert-types"
+
 export type Notification = {
-    level: "default" | "info" | "warning" | "critical" | "success"
+    type: AlertType
     message: string
     href: string
 }

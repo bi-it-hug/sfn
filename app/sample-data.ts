@@ -1,9 +1,10 @@
 import { Notification } from "@/types/notification"
+
 import { User } from "@/types/user"
 
 const greetings = ["Good Morning", "Howdy", "Praise thee", "God be with you"]
 
-const user: User[] = [
+const users: User[] = [
     {
         id: 1,
         name: "Lorenzo Hug",
@@ -22,30 +23,30 @@ const user: User[] = [
 
 const notifications: Notification[] = [
     {
-        level: "default",
+        type: "default",
         message: "Good Morning!",
         href: "#",
     },
     {
-        level: "info",
+        type: "info",
         message: "Schissverfolgung",
         href: "#",
     },
     {
-        level: "warning",
+        type: "warning",
         message: "Schissverfolgung",
         href: "#",
     },
     {
-        level: "critical",
+        type: "critical",
         message: "Schissverfolgung",
         href: "#",
     },
     {
-        level: "success",
+        type: "success",
         message: "Schissverfolgung",
         href: "#",
     },
 ]
 
-export { user, notifications, greetings }
+export { users, notifications, greetings }
