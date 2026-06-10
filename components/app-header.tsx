@@ -7,10 +7,10 @@ import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Separator } from "@/components/ui/separator"
 import { greetings, users } from "@/app/sample-data"
 import { NavUser } from "@/components/nav-user"
+import { Button } from "@/components/ui/button"
 import { cn, getRandomInt } from "@/lib/utils"
-import { useEffect, useState } from "react"
-import { Button } from "./ui/button"
 import { ExternalToast, toast } from "sonner"
+import { useEffect, useState } from "react"
 import { CheckCheck } from "lucide-react"
 
 export function AppHeader() {
@@ -19,24 +19,37 @@ export function AppHeader() {
     const [isScrolled, setIsScrolled] = useState(false)
 
     const testUser = users[0]
+    const max = 999999999999
 
     const testNotification: TNotification[] = [
         {
-            id: getRandomInt(0, 999999999999),
+            id: getRandomInt(0, max),
             type: "info",
             message: "Alle Pflanzen sind glücklich.",
             href: "/",
         },
         {
-            id: getRandomInt(0, 999999999999),
+            id: getRandomInt(0, max),
             type: "warning",
             message: "Pflanze stirbt in 5 Minuten!",
             href: "/",
         },
         {
-            id: getRandomInt(0, 999999999999),
+            id: getRandomInt(0, max),
             type: "error",
             message: "ALLE PFLANZEN TOT!!!",
+            href: "/",
+        },
+        {
+            id: getRandomInt(0, max),
+            type: "default",
+            message: "Einfach nur Schiss...",
+            href: "/",
+        },
+        {
+            id: getRandomInt(0, max),
+            type: "success",
+            message: "ES HAT FUNKTIONIERT!!!",
             href: "/",
         },
     ]

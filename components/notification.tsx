@@ -11,7 +11,7 @@ import {
 import { Dispatch, SetStateAction } from "react"
 import { Button } from "./ui/button"
 
-const typeStyles: Record<TNotification["type"], string> = {
+export const typeStyles: Record<TNotification["type"], string> = {
     default:
         "bg-muted text-muted-foreground hover:bg-muted/80 focus-visible:border-border focus-visible:ring-ring/20! dark:hover:bg-muted/70!",
     success:
@@ -32,6 +32,11 @@ export function Notification({
     const Icon = ["default", "info"].includes(data.type)
         ? BadgeInfo
         : BadgeAlert
+
+    function clearData() {
+        setData((prev) => prev.filter((n) => n.id !== data.id))
+    }
+
     return (
         <Item
             variant="outline"
@@ -47,13 +52,7 @@ export function Notification({
                 <ItemTitle className="font-normal">{data.message}</ItemTitle>
             </ItemContent>
             <ItemActions>
-                <Button
-                    variant="outline"
-                    size="icon-xs"
-                    onClick={() =>
-                        setData((prev) => prev.filter((n) => n.id !== data.id))
-                    }
-                >
+                <Button variant="outline" size="icon-xs" onClick={clearData}>
                     <CheckCheck />
                 </Button>
                 <ChevronRight className="size-4" />

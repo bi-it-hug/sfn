@@ -45,7 +45,7 @@ export default function RootLayout({
             )}
         >
             <body>
-                <Toaster />
+                <Toaster richColors={true} />
                 <ThemeProvider>
                     <TooltipProvider>
                         <SidebarProvider>

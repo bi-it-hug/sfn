@@ -22,6 +22,7 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { Badge } from "./ui/badge"
 
 export function NavNotifications({
     data,
@@ -30,11 +31,22 @@ export function NavNotifications({
     data: TNotification[]
     setData: Dispatch<SetStateAction<TNotification[]>>
 }) {
+    const isNotEmpty = data.length !== 0
+
+    function clearData() {
+        setData([])
+    }
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button variant="secondary" size="icon" className="relative">
                     <Bell />
+                    {isNotEmpty && (
+                        <Badge className="absolute bottom-[calc(100%-9px)] left-[calc(100%-9px)] size-fit min-w-4 bg-destructive px-0.5 font-mono text-[10px] leading-none text-foreground">
+                            {data.length}
+                        </Badge>
+                    )}
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -42,16 +54,16 @@ export function NavNotifications({
                 className="max-h-96 min-w-fit pt-0"
             >
                 <DropdownMenuGroup>
-                    <div className="sticky top-0 flex h-fit w-full items-start justify-between bg-card pt-1">
+                    <div className="sticky top-0 no-scrollbar flex h-fit w-full items-start justify-between bg-card pt-1">
                         <DropdownMenuLabel>Notifications</DropdownMenuLabel>
-                        {data.length !== 0 && (
+                        {isNotEmpty && (
                             <Tooltip>
                                 <TooltipTrigger asChild>
                                     <Button
                                         variant="outline"
                                         size="icon-xs"
                                         className="size-5.25"
-                                        onClick={() => setData([])}
+                                        onClick={clearData}
                                     >
                                         <CheckCheck />
                                     </Button>
@@ -63,7 +75,7 @@ export function NavNotifications({
                         )}
                     </div>
                     <div className="flex flex-col gap-1">
-                        {data.length !== 0 ? (
+                        {isNotEmpty ? (
                             data.map((entry, index) => (
                                 <Notification
                                     key={index}
