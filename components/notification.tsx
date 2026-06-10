@@ -1,5 +1,5 @@
-import { BadgeAlert, BadgeInfo, ChevronRight } from "lucide-react"
-import type { Notification } from "@/types/notification"
+import { BadgeAlert, BadgeInfo, CheckCheck, ChevronRight } from "lucide-react"
+import type { TNotification } from "@/types/notification"
 import { cn } from "@/lib/utils"
 import {
     Item,
@@ -8,8 +8,10 @@ import {
     ItemMedia,
     ItemTitle,
 } from "@/components/ui/item"
+import { Dispatch, SetStateAction } from "react"
+import { Button } from "./ui/button"
 
-const typeStyles: Record<Notification["type"], string> = {
+const typeStyles: Record<TNotification["type"], string> = {
     default:
         "bg-muted text-muted-foreground hover:bg-muted/80 focus-visible:border-border focus-visible:ring-ring/20! dark:hover:bg-muted/70!",
     success:
@@ -20,7 +22,13 @@ const typeStyles: Record<Notification["type"], string> = {
     error: "bg-destructive/10 text-destructive hover:bg-destructive/20! focus-visible:border-destructive/40 focus-visible:ring-destructive/20! dark:bg-destructive/20! dark:hover:bg-destructive/30! dark:focus-visible:ring-destructive/40",
 }
 
-export function Notification({ data }: { data: Notification }) {
+export function Notification({
+    data,
+    setData,
+}: {
+    data: TNotification
+    setData: Dispatch<SetStateAction<TNotification[]>>
+}) {
     const Icon = ["default", "info"].includes(data.type)
         ? BadgeInfo
         : BadgeAlert
@@ -28,20 +36,29 @@ export function Notification({ data }: { data: Notification }) {
         <Item
             variant="outline"
             size="sm"
-            className={cn(typeStyles[data.type], "min-w-max")}
-            asChild
+            className={cn(typeStyles[data.type], "min-w-max px-2 py-1.5")}
+            // asChild
         >
-            <a href={data.href}>
-                <ItemMedia>
-                    <Icon className="size-5" />
-                </ItemMedia>
-                <ItemContent>
-                    <ItemTitle>{data.message}</ItemTitle>
-                </ItemContent>
-                <ItemActions>
-                    <ChevronRight className="size-4" />
-                </ItemActions>
-            </a>
+            {/* <a href={data.href}> */}
+            <ItemMedia>
+                <Icon className="size-4" />
+            </ItemMedia>
+            <ItemContent>
+                <ItemTitle className="font-normal">{data.message}</ItemTitle>
+            </ItemContent>
+            <ItemActions>
+                <Button
+                    variant="outline"
+                    size="icon-xs"
+                    onClick={() =>
+                        setData((prev) => prev.filter((n) => n.id !== data.id))
+                    }
+                >
+                    <CheckCheck />
+                </Button>
+                <ChevronRight className="size-4" />
+            </ItemActions>
+            {/* </a> */}
         </Item>
     )
 }

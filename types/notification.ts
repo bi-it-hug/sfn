@@ -1,6 +1,7 @@
 import { AlertType } from "@/types/altert-types"
 
-export type Notification = {
+export type TNotification = {
+    id: number
     type: AlertType
     message: string
     href: string

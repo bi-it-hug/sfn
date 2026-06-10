@@ -1,5 +1,8 @@
+"use client"
+
 import { NavNotifications } from "@/components/nav-notifications"
 import { AppBreadcrumb } from "@/components/app-breadcrumb"
+import type { TNotification } from "@/types/notification"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Separator } from "@/components/ui/separator"
 import { greetings, users } from "@/app/sample-data"
@@ -7,14 +10,54 @@ import { NavUser } from "@/components/nav-user"
 import { cn, getRandomInt } from "@/lib/utils"
 import { useEffect, useState } from "react"
 import { Button } from "./ui/button"
-import { toast } from "sonner"
-import { Notification } from "@/types/notification"
-import { AlertType } from "@/types/altert-types"
+import { ExternalToast, toast } from "sonner"
+import { CheckCheck } from "lucide-react"
 
 export function AppHeader() {
-    const [isScrolled, setIsScrolled] = useState(false)
+    const [notifications, setNotifications] = useState<TNotification[]>([])
     const [greeting, setGreeting] = useState(greetings[0])
-    const currentUser = users[0]
+    const [isScrolled, setIsScrolled] = useState(false)
+
+    const testUser = users[0]
+
+    const testNotification: TNotification[] = [
+        {
+            id: getRandomInt(0, 999999999999),
+            type: "info",
+            message: "Alle Pflanzen sind glücklich.",
+            href: "/",
+        },
+        {
+            id: getRandomInt(0, 999999999999),
+            type: "warning",
+            message: "Pflanze stirbt in 5 Minuten!",
+            href: "/",
+        },
+        {
+            id: getRandomInt(0, 999999999999),
+            type: "error",
+            message: "ALLE PFLANZEN TOT!!!",
+            href: "/",
+        },
+    ]
+
+    function getRandomNotification() {
+        return testNotification[getRandomInt(0, testNotification.length - 1)]
+    }
+
+    function markAllAsRead(notificationId: TNotification["id"]) {
+        setNotifications((prev) => prev.filter((n) => n.id !== notificationId))
+    }
+
+    function renderNotification(
+        notificationType: TNotification["type"],
+        message: string,
+        options: ExternalToast
+    ) {
+        notificationType === "default"
+            ? toast(message, options)
+            : toast[notificationType](message, options)
+    }
 
     useEffect(() => {
         setGreeting(greetings[getRandomInt(0, greetings.length - 1)]!)
@@ -49,9 +92,6 @@ export function AppHeader() {
         return () => observer.disconnect()
     }, [])
 
-    const type: AlertType = "info"
-    const [schissCount, setSchissCount] = useState(1)
-
     return (
         <header
             className={cn(
@@ -72,25 +112,28 @@ export function AppHeader() {
             <section className="flex items-center gap-2">
                 <Button
                     onClick={() => {
-                        toast[type](
-                            `Schiss ${schissCount} has been initiated!`,
-                            {
-                                action: {
-                                    label: "Yeet",
-                                    onClick: () => console.log("Yeet"),
-                                },
-                            }
-                        )
-                        setSchissCount(schissCount + 1)
+                        const rando = getRandomNotification()
+                        const message = `#${rando.id} ${rando.message}`
+                        const options: ExternalToast = {
+                            action: {
+                                label: <CheckCheck size={14} />,
+                                onClick: () => markAllAsRead(rando.id),
+                            },
+                        }
+                        renderNotification(rando.type, message, options)
+                        setNotifications((prev) => [...prev, rando])
                     }}
                 >
-                    Schiss!
+                    Test
                 </Button>
                 <p className="truncate text-xs text-muted-foreground">
-                    {`${greeting}, ${currentUser.name.trim().split(/\s+/)[0]}!`}
+                    {`${greeting}, ${testUser.name.trim().split(/\s+/)[0]}!`}
                 </p>
-                <NavNotifications />
-                <NavUser user={currentUser} />
+                <NavNotifications
+                    data={notifications}
+                    setData={setNotifications}
+                />
+                <NavUser user={testUser} />
             </section>
         </header>
     )

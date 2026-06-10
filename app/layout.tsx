@@ -1,5 +1,3 @@
-"use client"
-
 import { AppSidebarMenu } from "@/components/app-sidebar-menu"
 import { SettingsDialog } from "@/components/settings-dialog"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -15,9 +13,9 @@ import {
     SidebarFooter,
     SidebarGroup,
     SidebarGroupLabel,
+    SidebarInset,
     SidebarMenu,
     SidebarMenuItem,
-    SidebarInset,
     SidebarProvider,
 } from "@/components/ui/sidebar"
 
