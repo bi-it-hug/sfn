@@ -18,7 +18,7 @@ export function CountCard({
     error: string | null
 }) {
     return (
-        <Card className="@container/card">
+        <Card className="min-h-30">
             <CardHeader className="h-full">
                 <CardDescription>{title}</CardDescription>
                 <CardTitle className="text-center text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">

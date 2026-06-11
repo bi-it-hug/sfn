@@ -44,7 +44,7 @@ export function NavNotifications({
                     <Bell />
                     {isNotEmpty && (
                         <Badge className="absolute bottom-[calc(100%-9px)] left-[calc(100%-9px)] size-fit min-w-4 bg-destructive px-0.5 font-mono text-[10px] leading-none text-foreground">
-                            {data.length}
+                            {data.length > 9 ? "9+" : data.length}
                         </Badge>
                     )}
                 </Button>
@@ -54,7 +54,7 @@ export function NavNotifications({
                 className="max-h-96 min-w-fit pt-0"
             >
                 <DropdownMenuGroup>
-                    <div className="sticky top-0 no-scrollbar flex h-fit w-full items-start justify-between bg-card pt-1">
+                    <div className="sticky top-0 z-1 no-scrollbar flex h-fit w-full items-start justify-between bg-card pt-1">
                         <DropdownMenuLabel>Notifications</DropdownMenuLabel>
                         {isNotEmpty && (
                             <Tooltip>

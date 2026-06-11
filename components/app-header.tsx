@@ -14,48 +14,61 @@ import { useEffect, useState } from "react"
 import { CheckCheck } from "lucide-react"
 
 export function AppHeader() {
-    const [notifications, setNotifications] = useState<TNotification[]>([])
+    const max = 999999999999
+
     const [greeting, setGreeting] = useState(greetings[0])
     const [isScrolled, setIsScrolled] = useState(false)
 
     const testUser = users[0]
-    const max = 999999999999
 
-    const testNotification: TNotification[] = [
+    const testNotifications: TNotification[] = [
         {
             id: getRandomInt(0, max),
             type: "info",
-            message: "Alle Pflanzen sind glücklich.",
+            message: "Works on my machine.",
+            description:
+                "Das Problem wurde erfolgreich ignoriert und an die Produktion weitergeleitet.",
             href: "/",
         },
         {
             id: getRandomInt(0, max),
             type: "warning",
-            message: "Pflanze stirbt in 5 Minuten!",
+            message: "TODO: Problem später lösen.",
+            description:
+                "Dieser Eintrag existiert seit 14 Monaten und wird vermutlich vererbt.",
             href: "/",
         },
         {
             id: getRandomInt(0, max),
             type: "error",
-            message: "ALLE PFLANZEN TOT!!!",
+            message: "Uncaught Exception: Skill Issue",
+            description:
+                "Die Anwendung hat die Verantwortung erfolgreich an den Benutzer delegiert.",
             href: "/",
         },
         {
             id: getRandomInt(0, max),
             type: "default",
-            message: "Einfach nur Schiss...",
+            message: "git push --force wurde erfolgreich ausgeführt.",
+            description:
+                "Die letzten 3 Wochen Entwicklungsarbeit gelten nun als Mythos.",
             href: "/",
         },
         {
             id: getRandomInt(0, max),
             type: "success",
-            message: "ES HAT FUNKTIONIERT!!!",
+            message: "Der Bug ist verschwunden.",
+            description:
+                "Bitte nicht weiter testen. Wir möchten ihn nicht erschrecken.",
             href: "/",
         },
     ]
 
+    const [notifications, setNotifications] =
+        useState<TNotification[]>(testNotifications)
+
     function getRandomNotification() {
-        return testNotification[getRandomInt(0, testNotification.length - 1)]
+        return testNotifications[getRandomInt(0, testNotifications.length - 1)]
     }
 
     function markAllAsRead(notificationId: TNotification["id"]) {
@@ -126,8 +139,9 @@ export function AppHeader() {
                 <Button
                     onClick={() => {
                         const rando = getRandomNotification()
-                        const message = `#${rando.id} ${rando.message}`
+                        const message = rando.message
                         const options: ExternalToast = {
+                            description: rando.description,
                             action: {
                                 label: <CheckCheck size={14} />,
                                 onClick: () => markAllAsRead(rando.id),

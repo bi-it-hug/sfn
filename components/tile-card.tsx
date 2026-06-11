@@ -155,9 +155,7 @@ function NodeCard({ data }: { data: NodeItem }) {
         <Card size="sm" className="h-fit w-full">
             <CardHeader>
                 <CardAction>
-                    <Badge
-                        variant={data.isActive ? "secondary" : "destructive"}
-                    >
+                    <Badge variant={data.isActive ? "success" : "destructive"}>
                         <ActiveIcon data-icon="inline-start" />
                         {data.isActive ? "Online" : "Offline"}
                     </Badge>

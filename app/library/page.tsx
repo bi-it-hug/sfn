@@ -18,13 +18,17 @@ export default function Page() {
 
     return (
         <div className="grid size-full min-h-0 grid-cols-4 grid-rows-[min-content] flex-col gap-grid">
-            {loading
-                ? Array.from({ length: 16 }).map((_, index) => (
-                      <CardSkeleton key={index} />
-                  ))
-                : rawData?.map((entry, index) => (
-                      <TopPlantCard key={index} data={entry} />
-                  ))}
+            {error ? (
+                <div className="no-data">No data.</div>
+            ) : loading ? (
+                Array.from({ length: 16 }).map((_, index) => (
+                    <CardSkeleton key={index} />
+                ))
+            ) : (
+                rawData?.map((entry, index) => (
+                    <TopPlantCard key={index} data={entry} />
+                ))
+            )}
         </div>
     )
 }

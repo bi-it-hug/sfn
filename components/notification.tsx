@@ -1,26 +1,13 @@
-import { BadgeAlert, BadgeInfo, CheckCheck, ChevronRight } from "lucide-react"
 import type { TNotification } from "@/types/notification"
-import { cn } from "@/lib/utils"
-import {
-    Item,
-    ItemActions,
-    ItemContent,
-    ItemMedia,
-    ItemTitle,
-} from "@/components/ui/item"
 import { Dispatch, SetStateAction } from "react"
-import { Button } from "./ui/button"
-
-export const typeStyles: Record<TNotification["type"], string> = {
-    default:
-        "bg-muted text-muted-foreground hover:bg-muted/80 focus-visible:border-border focus-visible:ring-ring/20! dark:hover:bg-muted/70!",
-    success:
-        "bg-success/10 text-success hover:bg-success/20! focus-visible:border-success/40 focus-visible:ring-success/20! dark:bg-success/20! dark:hover:bg-success/30! dark:focus-visible:ring-success/40",
-    info: "bg-info/10 text-info hover:bg-info/20! focus-visible:border-info/40 focus-visible:ring-info/20! dark:bg-info/20! dark:hover:bg-info/30! dark:focus-visible:ring-info/40",
-    warning:
-        "bg-warning/10 text-warning hover:bg-warning/20! focus-visible:border-warning/40 focus-visible:ring-warning/20! dark:bg-warning/20! dark:hover:bg-warning/30! dark:focus-visible:ring-warning/40",
-    error: "bg-destructive/10 text-destructive hover:bg-destructive/20! focus-visible:border-destructive/40 focus-visible:ring-destructive/20! dark:bg-destructive/20! dark:hover:bg-destructive/30! dark:focus-visible:ring-destructive/40",
-}
+import { Button } from "@/components/ui/button"
+import * as Lucide from "lucide-react"
+import {
+    Alert,
+    AlertAction,
+    AlertDescription,
+    AlertTitle,
+} from "@/components/ui/alert"
 
 export function Notification({
     data,
@@ -29,35 +16,41 @@ export function Notification({
     data: TNotification
     setData: Dispatch<SetStateAction<TNotification[]>>
 }) {
-    const Icon = ["default", "info"].includes(data.type)
-        ? BadgeInfo
-        : BadgeAlert
-
     function clearData() {
         setData((prev) => prev.filter((n) => n.id !== data.id))
     }
 
+    const Icon: Lucide.LucideIcon =
+        data.type === "warning"
+            ? Lucide.BadgeAlert
+            : data.type === "success"
+              ? Lucide.BadgeCheck
+              : data.type === "info"
+                ? Lucide.BadgeInfo
+                : data.type === "error"
+                  ? Lucide.BadgeX
+                  : Lucide.Badge
+
     return (
-        <Item
-            variant="outline"
-            size="sm"
-            className={cn(typeStyles[data.type], "min-w-max px-2 py-1.5")}
-            // asChild
+        <Alert
+            className="pl-2"
+            variant={data.type === "error" ? "destructive" : data.type}
         >
-            {/* <a href={data.href}> */}
-            <ItemMedia>
-                <Icon className="size-4" />
-            </ItemMedia>
-            <ItemContent>
-                <ItemTitle className="font-normal">{data.message}</ItemTitle>
-            </ItemContent>
-            <ItemActions>
-                <Button variant="outline" size="icon-xs" onClick={clearData}>
-                    <CheckCheck />
+            <Icon />
+            <AlertTitle className="min-w-max">{data.message}</AlertTitle>
+            <AlertDescription className="text-xs">
+                {data.description}
+            </AlertDescription>
+            <AlertAction>
+                <Button
+                    variant="outline"
+                    size="icon-xs"
+                    onClick={clearData}
+                    className="text-foreground"
+                >
+                    <Lucide.CheckCheck />
                 </Button>
-                <ChevronRight className="size-4" />
-            </ItemActions>
-            {/* </a> */}
-        </Item>
+            </AlertAction>
+        </Alert>
     )
 }

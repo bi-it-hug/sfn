@@ -1,8 +1,9 @@
-import { AlertType } from "@/types/altert-types"
+import { TAlert } from "@/types/altert-types"
 
 export type TNotification = {
     id: number
-    type: AlertType
+    type: TAlert
     message: string
+    description: string
     href: string
 }

@@ -54,13 +54,13 @@ export function NodeTable() {
     const noValue = <p className="text-muted-foreground">Empty</p>
 
     return (
-        <Card className="h-full">
+        <Card className="h-full gap-0">
             <CardHeader className="border-b">
                 <CardTitle>Nodes</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="h-full">
                 {error ? (
-                    <div className="no-data">No data available.</div>
+                    <div className="no-data">No data.</div>
                 ) : (
                     <Table>
                         <TableHeader>

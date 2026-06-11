@@ -191,6 +191,10 @@
     }
 
     .no-data {
-        @apply flex size-full min-h-24 items-center justify-center text-sm text-muted-foreground;
+        @apply col-span-4 row-span-2 flex size-full min-h-24 items-center justify-center text-sm text-muted-foreground;
+    }
+
+    [data-icon] {
+        align-self: flex-start !important;
     }
 }

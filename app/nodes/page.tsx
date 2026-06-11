@@ -13,18 +13,22 @@ export default function Page() {
     } = useFetch("/api/nodes", {
         initialData: [] as NodeItem[],
         parse: (json) => unwrapListResponse(json as NodeResponse),
-        errorMessage: "Could not load chart data.",
+        errorMessage: "Could not load node data.",
     })
 
     return (
         <div className="grid size-full min-h-0 grid-cols-1 grid-rows-[min-content] flex-col gap-grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {loading
-                ? Array.from({ length: 16 }).map((_, index) => (
-                      <CardSkeleton key={index} />
-                  ))
-                : rawData.map((entry, index) => (
-                      <NodeCard key={index} data={entry} />
-                  ))}
+            {error ? (
+                <div className="no-data">No data.</div>
+            ) : loading ? (
+                Array.from({ length: 16 }).map((_, index) => (
+                    <CardSkeleton key={index} />
+                ))
+            ) : (
+                rawData.map((entry, index) => (
+                    <NodeCard key={index} data={entry} />
+                ))
+            )}
         </div>
     )
 }

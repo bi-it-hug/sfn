@@ -1,1 +1,1 @@
-export type AlertType = "default" | "success" | "info" | "warning" | "error"
+export type TAlert = "default" | "success" | "info" | "warning" | "error"
